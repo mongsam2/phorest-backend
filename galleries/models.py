@@ -19,7 +19,6 @@ class Gallery(models.Model):
     background = models.ForeignKey(Background, on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     image_type = models.ForeignKey(ImageType, on_delete=models.SET_NULL, null=True, blank=True)
-    # user ForeignKey
-
+    user = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, blank=True)
 
 
