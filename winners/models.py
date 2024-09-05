@@ -5,4 +5,4 @@ class Winner(models.Model):
     rank = models.PositiveIntegerField()
     win_date = models.DateField()
     weekly_like = models.PositiveIntegerField(default=0)
-    gallery = models.ForeignKey('galleries.Gallery', on_delete=models.SET_NULL, null=True, balnk=True)
+    gallery = models.ForeignKey('galleries.Gallery', on_delete=models.SET_NULL, null=True, blank=True)

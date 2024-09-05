@@ -19,6 +19,8 @@ class Gallery(models.Model):
     background = models.ForeignKey(Background, on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     image_type = models.ForeignKey(ImageType, on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, blank=True)
+    owner = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, blank=True)
+    # ManyToMany
+    like_users = models.ManyToManyField('users.User', through='users.UserGallery')
 
 
