@@ -22,12 +22,14 @@ class User(AbstractUser):
     login_path = models.CharField(max_length=6, choices=LoginPathChoices.choices)
     is_email_subscribed = models.BooleanField(default=False)
     # ManyToMany
-    products = models.ManyToManyField('products.Product', through='UserProduct')
+    products = models.ManyToManyField('products.Product', through='UserProduct', related_name="users")
+    
     
 class UserGallery(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     gallery = models.ForeignKey('galleries.Gallery', on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
 
 class UserProduct(models.Model):
 

@@ -7,4 +7,4 @@ class Product(models.Model):
     description = models.TextField()
     price = models.PositiveIntegerField()
     image = models.ImageField()
-    gallery = models.ForeignKey('galleries.Gallery', on_delete=models.SET_NULL, null=True, blank=True)
+    gallery = models.ForeignKey('galleries.Gallery', on_delete=models.SET_NULL, null=True, blank=True, related_name="galleries")
