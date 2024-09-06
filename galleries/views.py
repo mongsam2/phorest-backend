@@ -1,15 +1,20 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import status
+from django.conf import settings
 
-from .models import Gallery, Category
+from .models import Gallery, Category, ImageType
 from users.models import User
 
-from .serializers import GetGalleriesSerializer
+from .serializers import GetGalleriesSerializer, PostGalleriesSerializer
 
 
 # Create your views here.
 class Galleries(APIView):
+
+    # permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         category_name = request.query_params.get("category")
@@ -27,3 +32,19 @@ class Galleries(APIView):
         )
 
         return Response(data=serializer.data)
+
+    def post(self, request):
+        serializer = PostGalleriesSerializer(data=request.data)
+        user = request.user
+
+        if settings.DEBUG and not user.is_authenticated:
+            user = User.objects.get(username=settings.SUPERUSER)
+
+        if serializer.is_valid():
+
+            gallery = serializer.save(owner=user)
+            return Response(
+                data={"detail": "Upload Gallery"}, status=status.HTTP_200_OK
+            )
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
