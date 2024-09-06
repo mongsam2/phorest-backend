@@ -6,6 +6,8 @@ from .models import Gallery, Category
 from users.models import User
 
 from .serializers import GetGalleriesSerializer
+
+
 # Create your views here.
 class Galleries(APIView):
 
@@ -18,9 +20,10 @@ class Galleries(APIView):
             category_id = Category.objects.get(name=category_name)
         except:
             raise ParseError("DB에서 해당 카테고리를 찾을 수 없습니다.")
-        
-        galleries = Gallery.objects.filter(category=category_id)
-        serializer = GetGalleriesSerializer(galleries, many=True)
-        
-        return Response(serializer.data)
 
+        galleries = Gallery.objects.filter(category=category_id)
+        serializer = GetGalleriesSerializer(
+            galleries, many=True, context={"request": request}
+        )
+
+        return Response(data=serializer.data)
