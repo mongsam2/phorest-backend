@@ -21,6 +21,6 @@ class Gallery(models.Model):
     image_type = models.ForeignKey(ImageType, on_delete=models.SET_NULL, null=True, blank=True)
     owner = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, blank=True, related_name="galleries")
     # ManyToMany
-    like_users = models.ManyToManyField('users.User', through='users.UserGallery', related_name="liking_galleries")
+    like_users = models.ManyToManyField('users.User', through='users.UserGallery', related_name="liking_galleries", null=True, blank=True)
 
 
