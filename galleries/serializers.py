@@ -41,3 +41,13 @@ class PostGalleriesSerializer(ModelSerializer):
     class Meta:
         model = Gallery
         fields = ("image", "title", "background", "category", "image_type")
+
+
+class GetGalleryRankingSerializer(ModelSerializer):
+
+    image = ImageField(use_url=True)
+    profile = ImageField(source="owner.profile_image", read_only=True)
+
+    class Meta:
+        model = Gallery
+        fields = ("id", "image", "title", "profile")
