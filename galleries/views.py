@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ParseError
+from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
 from django.conf import settings
@@ -73,4 +73,19 @@ class GalleriesRanking(APIView):
             many=True,
             context={"request": request},
         )
+        return Response(serializer.data)
+
+
+class GalleryDetail(APIView):
+
+    def get_object(self, id):
+        try:
+            gallery = Gallery.objects.get(id=id)
+        except Gallery.DoesNotExist:
+            raise NotFound("해당 id를 가진 작품이 없습니다.")
+        return gallery
+
+    def get(self, request, id):
+        gallery = self.get_object(id)
+        serializer = GetGalleriesSerializer(gallery, context={"request": request})
         return Response(serializer.data)

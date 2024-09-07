@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 )
 from .models import Gallery
 from users.models import User
+from django.conf import settings
 
 
 class GetGalleriesSerializer(ModelSerializer):
@@ -28,6 +29,8 @@ class GetGalleriesSerializer(ModelSerializer):
 
     def get_is_liked(self, obj):
         request = self.context.get("request")
+        if not request.user.is_authenticated:
+            return False
         liked = obj.like_users.filter(id=request.user.id).exists()
         return liked
 
