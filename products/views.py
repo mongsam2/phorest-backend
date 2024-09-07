@@ -17,3 +17,14 @@ class Products(APIView):
             products, many=True, context={"request": request}
         )
         return Response(serializer.data)
+
+
+class ProductDetail(APIView):
+
+    def get(self, request, id):
+        try:
+            product = Product.objects.get(id=id)
+        except Product.DoesNotExist:
+            raise NotFound("해당 제품이 없습니다.")
+        serializer = GetProductsSerializer(product, context={"request": request})
+        return Response(serializer.data)
