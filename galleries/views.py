@@ -89,3 +89,14 @@ class GalleryDetail(APIView):
         gallery = self.get_object(id)
         serializer = GetGalleriesSerializer(gallery, context={"request": request})
         return Response(serializer.data)
+
+    def put(self, request, id):
+        gallery = self.get_object(id)
+        serializer = PostGalleriesSerializer(
+            gallery, data=request.data, partial=True, context={"request": request}
+        )
+        if serializer.is_valid():
+            gallery = serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
